@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎂 Happy Birthday My Love 💖</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(180deg, #ffe1ec, #ffd4e8, #fff0f7);
+    font-family: "Poppins", sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: #333;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    color: #ff4081;
+    text-align: center;
+  }
+
+  h2 {
+    color: #ff4081;
+    font-weight: 600;
+  }
+
+  p {
+    text-align: center;
+    font-size: 1.1rem;
+  }
+
+  #start {
+    background: #ff66b2;
+    border: none;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  #start:hover {
+    transform: scale(1.1);
+    background: #ff85c1;
+  }
+
+  #cakeContainer {
+    display: none;
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin-top: 50px;
+  }
+
+  .cake {
+    position: absolute;
+    bottom: 0;
+    width: 200px;
+    height: 100px;
+    background: #ffb6c1;
+    border-radius: 15px;
+    left: 25px;
+    box-shadow: inset 0 -10px 0 #ff8aa3;
+  }
+
+  .cake::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    width: 200px;
+    height: 40px;
+    background: #ffe6ea;
+    border-radius: 10px 10px 0 0;
+    box-shadow: inset 0 -6px 0 #ffb6c1;
+  }
+
+  .candle {
+    position: absolute;
+    top: -65px;
+    width: 10px;
+    height: 35px;
+    background: #fff5a3;
+    left: calc(50% - 5px);
+    border-radius: 3px;
+    animation: flicker 1s infinite;
+  }
+
+  @keyframes flicker {
+    0% { box-shadow: 0 -10px 20px 3px rgba(255,255,0,0.6); }
+    50% { box-shadow: 0 -10px 20px 6px rgba(255,200,0,1); }
+    100% { box-shadow: 0 -10px 20px 3px rgba(255,255,0,0.6); }
+  }
+
+  .flame {
+    position: absolute;
+    top: -80px;
+    left: calc(50% - 7px);
+    width: 14px;
+    height: 20px;
+    background: radial-gradient(circle, #ffeb3b 0%, #ff9800 70%, transparent 80%);
+    border-radius: 50%;
+    animation: flameFlicker 0.2s infinite alternate;
+  }
+
+  @keyframes flameFlicker {
+    0% { transform: scale(1) rotate(0deg); opacity: 1; }
+    100% { transform: scale(0.9) rotate(5deg); opacity: 0.8; }
+  }
+
+  #finalMessage {
+    display: none;
+    text-align: center;
+    font-size: 1.8rem;
+    color: #e91e63;
+    margin-top: 40px;
+    width: 80%;
+    animation: fadeIn 3s ease-in-out forwards;
+    white-space: pre-line;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  /* Confetti */
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+  <h1>💌 For My Beautiful Princess 💌</h1>
+  <p>Click and enjoy wifey 💖</p>
+  <button id="start">Open Surprise 🎁</button>
+
+  <div id="cakeContainer">
+    <div class="cake"></div>
+    <div class="candle"></div>
+    <div class="flame"></div>
+  </div>
+
+  <div id="finalMessage"></div>
+
+  <canvas id="confetti"></canvas>
+
+<script>
+const startBtn = document.getElementById("start");
+const cakeContainer = document.getElementById("cakeContainer");
+const finalMessage = document.getElementById("finalMessage");
+const confettiCanvas = document.getElementById("confetti");
+const ctx = confettiCanvas.getContext("2d");
+
+let confetti = [];
+let animationFrame;
+
+function resizeCanvas() {
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+function createConfetti() {
+  confetti = [];
+  for (let i = 0; i < 150; i++) {
+    confetti.push({
+      x: Math.random() * confettiCanvas.width,
+      y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+      color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+      size: Math.random() * 8 + 2,
+      speed: Math.random() * 3 + 2,
+    });
+  }
+}
+
+function animateConfetti() {
+  ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  confetti.forEach(p => {
+    p.y += p.speed;
+    if (p.y > confettiCanvas.height) p.y = -10;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  animationFrame = requestAnimationFrame(animateConfetti);
+}
+
+startBtn.addEventListener("click", () => {
+  startBtn.style.display = "none";
+  document.querySelector("h1").textContent = "🎂 Happy Birthday My Love 🎂";
+  cakeContainer.style.display = "block";
+  createConfetti();
+  animateConfetti();
+
+  setTimeout(() => {
+    showFinalMessage();
+  }, 6000);
+});
+
+function showFinalMessage() {
+  cakeContainer.style.display = "none";
+  finalMessage.style.display = "block";
+  finalMessage.textContent = "";
+
+  const messageText = `
+💖 Happy Birthday to the most beautiful girl in the world 💖
+
+You make every day brighter with your smile😁
+You fill my heart with love and happiness🥰
+
+On your special day, I just want to say 
+You are my sunshine, my peace, and my forever🫂
+
+I love you endlessly ❤️
+And I will always be by your side🧑🏻‍❤️‍💋‍👩🏻
+
+🎉 HAPPY BIRTHDAY, MY LOVE 🎉
+💋💋💋`;
+
+  let i = 0;
+  function type() {
+    if (i < messageText.length) {
+      finalMessage.textContent += messageText.charAt(i);
+      i++;
+      setTimeout(type, 50);
+    }
+  }
+  type();
+
+  createConfetti();
+  animateConfetti();
+}
+</script>
+</body>
+</html>
